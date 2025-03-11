@@ -46,6 +46,18 @@ local function toggle_background(win, pane)
     win:perform_action(act.ReloadConfiguration, pane)
 end
 
+local function toggle_ligatures(win, pane)
+    local state = state_manager.read_state(state_file)
+
+    state.use_ligatures = not state.use_ligatures
+
+    if state.use_ligatures then
+        config.harfbuzz_features = { 'calt=0' }
+    end
+    state_manager.write_state(state, state_file)
+    win:perform_action(act.ReloadConfiguration, pane)
+end
+
 local new_commands = {
     {
         brief = 'Rename this tab',
@@ -56,7 +68,7 @@ local new_commands = {
             action = wezterm.action_callback(function(window, pane_2, line)
                 if line then
                     window:active_tab():set_title(line)
-                    window:toast_notification('wezterm', 'tab was renamed', nil, 4000)
+                    -- window:toast_notification('wezterm', 'tab was renamed', nil, 4000)
                 end
             end),
         }
@@ -67,6 +79,11 @@ local new_commands = {
 
         action = wezterm.action_callback(toggle_background),
     },
+    {
+        brief = 'Toggle ligatures',
+        icon = 'fa_font',
+        action = wezterm.action_callback(toggle_ligatures),
+    }
 }
 
 wezterm.on('augment-command-palette', function(win, pane)
@@ -94,6 +111,13 @@ config.launch_menu = launch_menu
 local local_config = load_local_config()
 for k, v in pairs(local_config) do
     config[k] = v
+end
+
+if state_file then
+    local this_state = state_manager.read_state(state_file)
+    if this_state.use_ligatures then
+        config.harfbuzz_features = { 'calt=0' }
+    end
 end
 
 return config

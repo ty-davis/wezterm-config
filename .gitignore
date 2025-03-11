@@ -1,6 +1,7 @@
 local/**/*
 !local/local_example.lua
 !local/local_super_example.lua
+!local/state_example.json
 
 
 imgs/cycle/*

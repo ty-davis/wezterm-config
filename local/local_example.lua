@@ -1,21 +1,32 @@
 -- local config
 
 local wezterm = require('wezterm')
+local state_manager = require('state_manager')
 local config = wezterm.config_builder()
 
 
+
 config.font = wezterm.font_with_fallback({"CaskaydiaCove Nerd Font Mono"})
-config.font_size = 10.5
+config.font_size = 11.5
 
 config.color_scheme = 'Vs Code Dark+ (Gogh)'
 
-config.window_background_image = 'C:/Users/USYEW/.config/wezterm/imgs/cycle/plane' .. math.random(8) .. '.png'
-config.window_background_image_hsb = {
-    brightness = 0.12,
-    hue = 1.0,
-    saturation = 0.6,
-}
-config.text_background_opacity = 0.5
+local state_file = "C:/Users/tydav/.config/wezterm/local/state.json"
+
+local state = state_manager.read_state(state_file)
+if state.use_background_image then
+    config.window_background_image = 'C:/Users/tydav/.config/wezterm/imgs/cycle/' .. math.random(7) .. '.png'
+    config.window_background_image_hsb = {
+        brightness = 0.04,
+        hue = 1.0,
+        saturation = 0.8,
+    }
+    config.text_background_opacity = 0.5
+end
+
+if state.use_ligatures then
+    config.harfbuzz_features = { 'calt=0' }
+end
 
 config.command_palette_font_size = 10.5
 
@@ -24,4 +35,11 @@ config.window_frame = {
     font_size = 9,
 }
 
-return config
+-- config.default_domain = 'WSL:Ubuntu'
+
+local result = {
+    local_config = config,
+    state_file = state_file
+}
+
+return result

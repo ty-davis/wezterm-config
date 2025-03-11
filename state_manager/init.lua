@@ -30,7 +30,7 @@ function state_manager.write_state(state, state_file)
     local f = io.open(state_file, 'w')
     if f then
         for k, v in pairs(state) do
-            local line = k .. ' = ' .. tostring(v) .. ' : ' .. type(v) .. '\r'
+            local line = k .. ' = ' .. tostring(v) .. ' : ' .. type(v) .. '\r\n'
             f:write(line)
         end
         f:close()
