@@ -15,11 +15,19 @@ local state_file = "C:/Users/tydav/.config/wezterm/local/state.json"
 
 local state = state_manager.read_state(state_file)
 if state.use_background_image then
-    config.window_background_image = 'C:/Users/tydav/.config/wezterm/imgs/cycle/' .. math.random(7) .. '.png'
-    config.window_background_image_hsb = {
-        brightness = 0.04,
-        hue = 1.0,
-        saturation = 0.8,
+    config.background = {
+        {
+            source = { File = 'C:/Users/tydav/.config/wezterm/imgs/cycle/' .. math.random(7) .. '.png' },
+            width = 'Cover',
+            height = 'Cover',
+            horizontal_align = 'Center',
+            vertical_align = 'Middle',
+            hsb = {
+                brightness = 0.04,
+                hue = 1.0,
+                saturation = 0.8,
+            },
+        },
     }
     config.text_background_opacity = 0.5
 end
