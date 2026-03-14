@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
 local act = wezterm.action
 local state_manager = require('state_manager')
+local project_commands = require('project_commands')
 
 local config = wezterm.config_builder()
 
@@ -83,7 +84,8 @@ local new_commands = {
         brief = 'Toggle ligatures',
         icon = 'fa_font',
         action = wezterm.action_callback(toggle_ligatures),
-    }
+    },
+    table.unpack(project_commands.get_commands()),
 }
 
 wezterm.on('augment-command-palette', function(win, pane)
